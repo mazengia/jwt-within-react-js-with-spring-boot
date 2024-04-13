@@ -6,7 +6,7 @@ import {AppstoreOutlined, MenuUnfoldOutlined, UserOutlined} from "@ant-design/ic
 const ListOfItems = [
 
     getItem('Collapse', 'Collapse', <MenuUnfoldOutlined/>),
-    getItem('Users', 'Users', <UserOutlined/>/*UserOutlined is icon */),
+    getItem('Users', 'Users', <UserOutlined/>),
     getItem('Course', 'Course', <UserOutlined/>),
     getItem('Navigation Two', 'sub2', <AppstoreOutlined/>, [
         getItem('Option 9', '9'),
