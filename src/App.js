@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import 'antd/dist/reset.css';
+import React from 'react';
+import Login from "./components/Login";
+import AuthService from "./auth/AuthService ";
+import Footer from "./components/Footer";
+import Content from "./components/Content";
+import SideMenu from "./components/SideMenu";
+import Header from "./components/Header";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const App = () => {
+    let isLoggedIn = AuthService.getCurrentUser();
+    return (
+        <div style={{display: "flex", flexDirection: "column", flex: 1, height: '100vh'}}>
+            {isLoggedIn ? (
+                <>
+                    <Header/>
+                    <div style={{display: "flex", flexDirection: "row", flex: 1}}>
+                        <SideMenu/>
+                        <Content/>
+                    </div>
+                    <Footer/>
+                </>
+            ) : (
+                <Login/> // Render Login component if not logged in
+            )}
+        </div>
+    );
+};
 
 export default App;
