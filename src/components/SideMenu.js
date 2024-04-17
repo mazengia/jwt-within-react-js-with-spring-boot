@@ -10,7 +10,7 @@ const ListOfItems = [
     getItem('Course', 'Course', <UserOutlined/>),
     getItem('Navigation Two', 'sub2', <AppstoreOutlined/>, [
         getItem('Option 9', '9'),
-        getItem('Option 10', '10')]),
+        getItem('Option 10', '10')],'horizontal'),
 ];
 
 function getItem(label, key, icon, children, type) {
@@ -40,13 +40,9 @@ function SideMenu() {
                 width: width,
                 display: "flex",
                 flexDirection: "column",
-            }}
-        >
+            }}>
             <Menu
-                style={{
-
-                    height: '100%'
-                }}
+                style={{height: '100%'}}
                 onClick={({key}) => {
                     if (key === "Collapse") {
                         toggleCollapsed(key);

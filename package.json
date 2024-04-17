@@ -35,7 +35,6 @@
     "build:local": "env-cmd -f .env react-app-rewired build",
     "build:production": "env-cmd -f .env.live react-app-rewired build"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, Divider, Drawer, Form, Input, notification, Row, Table} from "antd";
+import {Button, Col, Divider, Drawer, Form, Input, notification, Row, Select, Table} from "antd";
 import axiosInstance from "../auth/authHeader";
 
 const Users = () => {
     const [data, setData] = useState([]);
+    const [role, setRole] = useState([]);
     const [dataById, setDataById] = useState(null);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [addNewMode, setAddNewMode] = useState(false);
     const [api, contextHolder] = notification.useNotification();
-    const API_URL =   process.env.REACT_APP_API_URL ;
+    const API_URL = process.env.REACT_APP_API_URL;
+    const [form] = Form.useForm();
+
     const SubmitButton = ({form, children}) => {
         const [submittable, setSubmittable] = React.useState(false);
         const values = Form.useWatch([], form);
@@ -28,7 +31,7 @@ const Users = () => {
             </Button>
         );
     };
-    const [form] = Form.useForm();
+
     const getAllData = () => {
         axiosInstance.get(API_URL + "/users")
             .then(response => {
@@ -37,18 +40,27 @@ const Users = () => {
                 },
                 error => {
                     setLoading(false);
-                    console.log("Error=", error)
                     openNotificationWithIcon('error', 'Error', error?.message)
                 });
     };
+    const getAllRoles = () => {
+        axiosInstance.get(API_URL + "/role")
+            .then(response => {
+                    console.log("response", response)
+                    const roles = response?.data?._embedded?.rolesDTOes;
+                    setRole(roles);
+                },
 
+                error => {
+                    openNotificationWithIcon('error', 'Error', error?.message)
+                });
+    };
     const getDataById = (id) => {
         axiosInstance.get(API_URL + "/users/" + id)
             .then(response => {
                     setDataById(response?.data);
                 },
                 error => {
-                    console.log("Error=", error)
                     openNotificationWithIcon('error', 'Error', error?.message)
                 });
     };
@@ -65,25 +77,35 @@ const Users = () => {
                     getAllData();
                 },
                 error => {
-                    console.log("Error=", error)
                     openNotificationWithIcon('error', 'Error', error?.message)
                 })
 
     };
 
     const addNewRecord = (values) => {
-        const roleObj = {id: 1};
-        const roles = [roleObj];
-        const newData = {...values, role: roles};
-        axiosInstance.post(API_URL + "/users/signup", newData)
+
+        let updatedRole = values.role.id.map((item, index) => {
+            return { "id": item };
+        });
+        values.role=updatedRole
+console.log("values.role=",updatedRole)
+        console.log("values=", values)
+        // const roleArray = JSON.parse(values.role).id.map(id => ({ id }));
+
+        // console.log(roleArray);
+        // const roleObj = {id: 1};
+        // const roles = [roleObj];
+        // const newData = {...values, role: roles};
+        axiosInstance.post(API_URL + "/users/signup", values)
             .then(response => {
                 openNotificationWithIcon('success', 'Success', 'New Recorded Is added successfully.')
                 getAllData();
                 setOpen(false);
                 setDataById(null);
             }, error => {
-                console.log("Error=", error)
-                openNotificationWithIcon('error', 'Error', error?.message)
+                openNotificationWithIcon('error', 'Error'
+                    , error?.response?.data?.apierror?.message
+                    + " " + error?.response?.data?.apierror?.subErrors[0]?.field + " " + error?.response?.data?.apierror?.subErrors[0]?.message)
             })
     };
     const updateRecordById = (data, id) => {
@@ -95,8 +117,10 @@ const Users = () => {
                     setDataById(null);
                 }
                 , error => {
-                    console.log("Error=", error)
-                    openNotificationWithIcon('error', 'Error', error?.message)
+                    openNotificationWithIcon('error', 'Error'
+                        , error?.response?.data?.apierror?.message
+                        + " " + error?.response?.data?.apierror?.subErrors[0]?.field + " " + error?.response?.data?.apierror?.subErrors[0]?.message)
+
                 }
             );
     };
@@ -125,7 +149,9 @@ const Users = () => {
 
     useEffect(() => {
         getAllData();
-    });
+        getAllRoles();
+    }, []); // empty dependency array means this effect runs only once, similar to componentDidMount
+
 
     const columns = [
         {
@@ -232,6 +258,20 @@ const Users = () => {
                             rules={[{required: true, message: 'Please input username!'}]}
                         >
                             <Input/>
+                        </Form.Item>
+                        <Form.Item
+                            label="Role"
+                            name={["role", "id"]}
+                        >
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{
+                                    width: '100%',
+                                }}
+                                placeholder="Please select"
+                                options={role.map(role => ({ label: role.name, value: role.id }))}
+                            />
                         </Form.Item>
                         <Form.Item>
                             {/*<Button type="primary" htmlType="submit" form={form}>Submit</Button>*/}

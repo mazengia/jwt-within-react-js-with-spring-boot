@@ -3,18 +3,17 @@ import {Button, Form, Input} from 'antd';
 import AuthService from "../auth/AuthService ";
 
 const Login = () => {
-    const [error, setError] = useState(false);
+    const [errors, setError] = useState(null);
 
     const onFinish = (values) => {
         AuthService.login(values)
             .then(() => {
                 window.location.reload();
-            })
-            .catch(error => {
-                setError(true);
-                console.error("Login Error:", error);
-                // Handle login error
-            });
+            },
+               error=>{
+                setError(error.response.data.message)
+               }
+                )
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -55,9 +54,9 @@ const Login = () => {
                 >
                     <Input.Password placeholder={'Password ***'}/>
                 </Form.Item>
-                {error && (
+                {errors && (
                     <div style={{width: 300, alignItems: "center", marginBottom: 15}}>
-                        <label style={{color: 'red'}}>Invalid username or password!. Please try again</label>
+                        <label style={{color: 'red'}}>{errors}. Please try again</label>
                     </div>
                 )}
                 <Form.Item wrapperCol={{offset: 4, span: 16}}>

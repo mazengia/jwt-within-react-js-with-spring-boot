@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Dropdown, Menu} from 'antd';
-import {AppstoreOutlined, ArrowDownOutlined, CaretDownOutlined, LogoutOutlined, UserOutlined} from '@ant-design/icons';
+import {CaretDownOutlined, LogoutOutlined, UserOutlined} from '@ant-design/icons';
 import AuthService from "../auth/AuthService ";
+import {Button, Dropdown, Menu} from "antd";
 
 const Header = () => {
     const isLoggedIn = AuthService.getCurrentUser();
