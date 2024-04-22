@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Form, Input, InputNumber, Space} from 'antd';
+import {Button, Form, Input} from 'antd';
 
 const App = () => {
     const SubmitButton = ({form, children}) => {

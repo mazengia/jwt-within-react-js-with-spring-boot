@@ -32,6 +32,9 @@ class AuthService {
     getCurrentUser() {
         return JSON.parse(window.sessionStorage.getItem(USER_KEY));
     }
+    getRoles() {
+        return JSON.parse(window.sessionStorage.getItem(USER_KEY));
+    }
 }
 
 export default new AuthService();

@@ -2,16 +2,26 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Menu} from "antd";
 import {AppstoreOutlined, MenuUnfoldOutlined, UserOutlined} from "@ant-design/icons";
+import AuthService from "../auth/AuthService ";
+
+const isLoggedIn = AuthService.getCurrentUser();
+const listOfRoles = isLoggedIn?.roles[0];
 
 const ListOfItems = [
 
-    getItem('Collapse', 'Collapse', <MenuUnfoldOutlined/>),
-    getItem('Users', 'Users', <UserOutlined/>),
-    getItem('Course', 'Course', <UserOutlined/>),
-    getItem('Navigation Two', 'sub2', <AppstoreOutlined/>, [
-        getItem('Option 9', '9'),
-        getItem('Option 10', '10')],'horizontal'),
-];
+
+        getItem('Collapse', 'Collapse', <MenuUnfoldOutlined/>),
+        getItem('Users', 'Users', <UserOutlined/>),
+        getItem('Traffics', 'Traffics', <UserOutlined/>),
+        getItem('Course', 'Course', <UserOutlined/>),
+        getItem('Navigation Two', 'sub2', <AppstoreOutlined/>, [
+            getItem('Option 9', '9'),
+            getItem('Option 10', '10')], 'horizontal'),
+    ]
+;
+// if (listOfRoles == "ROLE_ADMINy") {
+//     ListOfItems.push(getItem('Users', 'Users', <UserOutlined/>))
+// }
 
 function getItem(label, key, icon, children, type) {
     return {
