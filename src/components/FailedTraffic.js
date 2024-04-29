@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, DatePicker, Divider, Drawer, Form, Input, notification, Row, Table} from "antd";
+import {Button, Col, Divider, Drawer, Form, Input, notification, Row, Table} from "antd";
 import axiosInstance from "../auth/authHeader";
-import dayjs from "dayjs";
 
-
-const onChange = (_, dateStr) => {
-    console.log('onChange:', dateStr);
-};
 const Traffics = () => {
     const [data, setData] = useState([]);
     const [dataById, setDataById] = useState(null);
@@ -16,6 +11,7 @@ const Traffics = () => {
     const [api, contextHolder] = notification.useNotification();
     const API_URL = process.env.REACT_APP_API_URL;
     const [trForm] = Form.useForm();
+
     const SubmitButton = ({form: trafficForm, children}) => {
         const [submittable, setSubmittable] = React.useState(false);
         const values = Form.useWatch([], trafficForm);
@@ -46,11 +42,9 @@ const Traffics = () => {
                 });
     };
     const getDataById = (id) => {
-
         axiosInstance.get(API_URL + "/traffics/" + id)
             .then(response => {
                     setDataById(response.data)
-                    response.data.fixedAt = dayjs(response.data.fixedAt);
                     trForm.setFieldsValue(response.data);
                 },
                 error => {
@@ -119,7 +113,6 @@ const Traffics = () => {
     const showDrawer = (id) => {
         setDataById(null);
         setOpen(true);
-        trForm.resetFields();
         if (id === undefined) {
             setAddNewMode(true);
         } else {
@@ -194,20 +187,6 @@ const Traffics = () => {
             title: 'Created At',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (text) => {
-                const date = new Date(text);
-                const options = {
-                    year: 'numeric',
-                    month: 'short',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                };
-                const formattedDate = date.toLocaleDateString('en-US', options);
-                return <span>{formattedDate}</span>;
-            },
-
         },
 
         {
@@ -228,7 +207,6 @@ const Traffics = () => {
             ),
         },
     ];
-
     return (
         <>
             {contextHolder}
@@ -282,13 +260,6 @@ const Traffics = () => {
                             rules={[{required: true, message: 'Please input username!'}]}
                         >
                             <Input/>
-                        </Form.Item>
-                        <Form.Item
-                            label="Failed At"
-                            name="fixedAt"
-                            rules={[{required: true, message: 'Please input username!'}]}
-                        >
-                            <DatePicker onChange={onChange} showTime/>
                         </Form.Item>
                         <Form.Item>
                             {/*<Button type="primary" htmlType="submit" form={form}>Submit</Button>*/}

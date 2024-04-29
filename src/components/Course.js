@@ -19,9 +19,9 @@ const Users = () => {
         });
     };
     const getAllData = () => {
-        axiosInstance.get(apiUrl + "/course")
+        axiosInstance.get(apiUrl + "/sites")
             .then(response => {
-                    setData(response?.data?._embedded?.coursesDTOes);
+                    setData(response?.data?._embedded?.sitesDtoses);
                     setLoading(false);
                 },
                 error => {
@@ -32,7 +32,7 @@ const Users = () => {
     };
 
     const getDataById = (id) => {
-        axiosInstance.get(apiUrl + "/course/" + id)
+        axiosInstance.get(apiUrl + "/sites/" + id)
             .then(response => {
                     setDataById(response?.data);
                 },
@@ -43,7 +43,7 @@ const Users = () => {
     };
 
     const deleteById = (id) => {
-        axiosInstance.delete(apiUrl + "/course/" + id)
+        axiosInstance.delete(apiUrl + "/sites/" + id)
             .then(response => {
                     api.open({
                         message: 'Success',
@@ -57,7 +57,7 @@ const Users = () => {
             );
     };
 
-    const addNewRecord = (values) => {
+    const addNewRecord   = (values) => {
         axiosInstance.post(apiUrl + "/course", values)
             .then(response => {
                     api.open({

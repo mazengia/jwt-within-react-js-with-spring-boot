@@ -33,7 +33,7 @@ class AuthService {
         return JSON.parse(window.sessionStorage.getItem(USER_KEY));
     }
     getRoles() {
-        return JSON.parse(window.sessionStorage.getItem(USER_KEY));
+        return this.getCurrentUser()?.roles;
     }
 }
 
